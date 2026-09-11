@@ -1,5 +1,10 @@
 #include <iostream>
+#include <vector>
 #include <string>
+#include <fstream>
+#include <iomanip>
+#include <algorithm>
+
 using namespace std;
 
 class Account
@@ -47,6 +52,27 @@ public:
     string getAccountType() const
     {
         return accountType;
+    }
+
+    bool deposite(double amount )
+    {
+        balance += amount;
+    }
+
+    bool withdraw(double amount)
+    {
+        if(amount > balance )  return false;
+
+        balance -= amount;
+        return true;
+    }
+    virtual void display() const
+    {
+        cout << "\nAccount Number : " << accountNumber;
+        cout << "\nName           : " << name;
+        cout << "\nAccount Type   : " << accountType;
+        cout << "\nBalance        : " << fixed
+             << setprecision(2) << balance << endl;
     }
 };
 
