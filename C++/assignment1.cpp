@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 // class Transation
 class Transaction
 {
@@ -101,24 +100,25 @@ public:
         return accountType;
     }
 
-    bool deposit(double amount )
+    bool deposit(double amount)
     {
         balance += amount;
     }
 
-    vector<Transaction>& getTransation()
+    vector<Transaction> &getTransation()
     {
         return transaction;
     }
 
-    void addTransaction(const Transaction& t)
+    void addTransaction(const Transaction &t)
     {
         transaction.push_back(t);
     }
 
     bool withdraw(double amount)
     {
-        if(amount > balance )  return false;
+        if (amount > balance)
+            return false;
 
         balance -= amount;
         return true;
@@ -132,14 +132,13 @@ public:
              << setprecision(2) << balance << endl;
     }
 
-    virtual bool canCheque() const 
+    virtual bool canCheque() const
     {
         return false;
     }
 
-    void save () const 
+    void save() const
     {
-
     }
 };
 
@@ -147,32 +146,31 @@ public:
 class SavingsAccount : public Account
 {
 public:
-    SavingsAccount(){accountType = "Savings";}
-    SavingsAccount(int accNo, string n, double balance) : Account(accNo, n, balance, "Savings"){}
+    SavingsAccount() { accountType = "Savings"; }
+    SavingsAccount(int accNo, string n, double balance) : Account(accNo, n, balance, "Savings") {}
 
-    bool canCheque() const override{return false;}
-
+    bool canCheque() const override { return false; }
 };
 
 // Checking Account
-class CheckingAccount : public Account 
+class CheckingAccount : public Account
 {
 public:
-    CheckingAccount(){accountType = "Checking";}
-    CheckingAccount(int accNo , string s , double balance) : Account(accNo , s , balance , "Checking"){}
-    bool canCheque() const override { return true;}   
+    CheckingAccount() { accountType = "Checking"; }
+    CheckingAccount(int accNo, string s, double balance) : Account(accNo, s, balance, "Checking") {}
+    bool canCheque() const override { return true; }
 };
 
 // class Bank
 class Bank
 {
 private:
-    vector<Account*> accounts;
-    Account* findAccount(int accountNumber)
+    vector<Account *> accounts;
+    Account *findAccount(int accountNumber)
     {
-        for(auto account : accounts)
+        for (auto account : accounts)
         {
-            if(account->getAccountNumber() == accountNumber)
+            if (account->getAccountNumber() == accountNumber)
             {
                 return account;
             }
@@ -183,13 +181,13 @@ private:
 public:
     ~Bank()
     {
-        for(auto account : accounts)
+        for (auto account : accounts)
         {
             delete account;
         }
     }
 
-    //add account
+    // add account
 
     void addAccount()
     {
@@ -219,12 +217,11 @@ public:
             return;
         }
 
-        if(type == 1)
+        if (type == 1)
         {
             accounts.push_back(
-                new SavingsAccount(accountNumber , name , initialBalance)
-            );
-            cout << "Savings account created successfully. With bank accountNumber :" << accountNumber << endl ;
+                new SavingsAccount(accountNumber, name, initialBalance));
+            cout << "Savings account created successfully. With bank accountNumber :" << accountNumber << endl;
         }
         else if (type == 2)
         {
@@ -232,11 +229,9 @@ public:
                 new CheckingAccount(
                     accountNumber,
                     name,
-                    initialBalance
-                )
-            );
+                    initialBalance));
 
-            cout << "Checking account created successfully. With bank accountNumber :" << accountNumber << endl ;
+            cout << "Checking account created successfully. With bank accountNumber :" << accountNumber << endl;
         }
         else
         {
@@ -252,7 +247,7 @@ public:
         cout << "\nEnter account number to delete: ";
         cin >> accountNumber;
 
-        for(auto it = accounts.begin() ; it != accounts.end() ; ++it)
+        for (auto it = accounts.begin(); it != accounts.end(); ++it)
         {
             if ((*it)->getAccountNumber() == accountNumber)
             {
@@ -284,7 +279,7 @@ public:
         cout << "\nEnter account number: ";
         cin >> accountNumber;
 
-        Account* account = findAccount(accountNumber);
+        Account *account = findAccount(accountNumber);
         if (account == nullptr)
         {
             cout << "Account not found.\n";
@@ -302,7 +297,7 @@ public:
         cout << "Enter amount: ";
         cin >> amount;
 
-        if(amount <= 0 )
+        if (amount <= 0)
         {
             cout << "Invalid amount.\n";
             return;
@@ -313,24 +308,22 @@ public:
             account->deposit(amount);
 
             account->addTransaction(
-                Transaction(date,"Cash Deposit",amount,"Cash deposited")
-            );
+                Transaction(date, "Cash Deposit", amount, "Cash deposited"));
 
             cout << "Cash deposited successfully.\n";
         }
-        else if(choice==2)
+        else if (choice == 2)
         {
-            if(!account->withdraw(amount))
+            if (!account->withdraw(amount))
             {
                 cout << "Insufficient balance.\n";
-                return ;
+                return;
             }
 
             account->addTransaction(
-                Transaction(date , "Cash Withdrawal" , amount , "Cash Withrawal")
-            );
+                Transaction(date, "Cash Withdrawal", amount, "Cash Withrawal"));
 
-         cout << "Cash withdrawn successfully.\n";
+            cout << "Cash withdrawn successfully.\n";
         }
         else
         {
@@ -338,10 +331,9 @@ public:
         }
     }
 
-
     // cheque transaction
 
-     void chequeTransaction()
+    void chequeTransaction()
     {
         int fromAccount;
         int toAccount;
@@ -351,7 +343,7 @@ public:
         cout << "\nEnter sender account number: ";
         cin >> fromAccount;
 
-        Account* sender = findAccount(fromAccount);
+        Account *sender = findAccount(fromAccount);
 
         if (sender == nullptr)
         {
@@ -369,7 +361,7 @@ public:
         cout << "Enter receiver account number: ";
         cin >> toAccount;
 
-        Account* receiver = findAccount(toAccount);
+        Account *receiver = findAccount(toAccount);
 
         if (receiver == nullptr)
         {
@@ -410,9 +402,7 @@ public:
                 "Cheque Sent",
                 amount,
                 "Cheque transfer",
-                toAccount
-            )
-        );
+                toAccount));
 
         // Receiver transaction
         receiver->addTransaction(
@@ -421,20 +411,87 @@ public:
                 "Cheque Received",
                 amount,
                 "Cheque transfer",
-                fromAccount
-            )
-        );
+                fromAccount));
 
         cout << "Cheque transaction successful.\n";
     }
 
+    void makeTransaction()
+    {
+        int choice;
 
+        cout << "\n1. Cash Transaction";
+        cout << "\n2. Cheque Transaction";
+        cout << "\nEnter choice: ";
+        cin >> choice;
 
+        if (choice == 1)
+        {
+            cashTransaction();
+        }
+        else if (choice == 2)
+        {
+            chequeTransaction();
+        }
+        else
+        {
+            cout << "Invalid choice.\n";
+        }
+    }
+    void queryBalance()
+    {
+        int accountNumber;
+
+        cout << "\nEnter account number: ";
+        cin >> accountNumber;
+
+        Account *account = findAccount(accountNumber);
+
+        if (account == nullptr)
+        {
+            cout << "Account not found.\n";
+            return;
+        }
+
+        account->display();
+    }
+
+    void displayAccounts()
+    {
+        if (accounts.empty())
+        {
+            cout << "\nNo accounts available.\n";
+            return;
+        }
+
+        cout << "\n========== ALL ACCOUNTS ==========\n";
+
+        for (auto account : accounts)
+        {
+            account->display();
+            cout << "----------------------------------\n";
+        }
+    }
+
+    // list transaction
+
+    void listTransactions()
+    {
+        int accountNumber;
+        cout << "\nEnter account number: ";
+        cin >> accountNumber;
+
+        Account *account = findAccount(accountNumber);
+
+        if (account == nullptr)
+        {
+            cout << "Account not found\n";
+        }
+    }
 };
-
 
 int main(void)
 {
-    
+
     return 0;
 }
