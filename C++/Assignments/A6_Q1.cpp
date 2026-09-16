@@ -22,7 +22,7 @@ void displayMatrix(int **matrix, int row , int col )
     }
     cout << endl;
   }
-}
+} 
 
 
 int main(void)
