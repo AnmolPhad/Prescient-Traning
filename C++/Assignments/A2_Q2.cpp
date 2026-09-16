@@ -3,17 +3,28 @@ using namespace std;
 
 int main(void)
 {
-    int number;
+    int marks;
     cout << "Enter a number 0 to 100";
-    cin >> number;
+    cin >> marks;
 
-    switch (expression)
+    if(marks >= 90)
     {
-    case constant expression:
-        /* code */
-        break;
-    
-    default:
-        break;
+        cout << "A Grade";
+    }
+    else if(marks >= 80 && marks < 90)
+    {
+        cout << "B grade";
+    }
+    else if(marks >= 70 && marks < 80){
+        cout << "C Grade";
+
+    }
+    else if(marks >= 60 && marks < 70)
+    {
+        cout << "D Grade";
+    }
+    else 
+    {
+        cout << "Fail";
     }
 }
