@@ -1,0 +1,12 @@
+Rahul	Maths	80
+Rahul	Physics	75
+Rahul	CPP	90
+Amit	Maths	90
+Amit	Physics	85
+Amit	CPP	78
+Priya	Maths	85
+Priya	Physics	95
+Priya	CPP	88
+Sneha	Maths	70
+Sneha	Physics	80
+Sneha	CPP	92
