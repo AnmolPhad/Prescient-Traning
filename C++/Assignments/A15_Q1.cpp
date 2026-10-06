@@ -264,7 +264,55 @@ int main(void)
                 }
                 break;
             }
-            cout << "Reactangle not found in file";
+            cout << "Rectangle not found in file";
+        }
+
+        break;
+
+        case 3:
+        {
+            string line;
+
+            while (getline(file, line))
+            {
+                if (regex_match(line, regex("^Triangle$")))
+                {
+                    getline(file, line);
+                    double side1 = getValue(line);
+                    getline(file, line);
+                    double side2 = getValue(line);
+                    getline(file, line);
+                    double side3 = getValue(line);
+                    sh = new Triangle(side1, side2, side3);
+                    sh->display();
+                    cout << "Area: " << sh->area() << endl;
+                    cout << "Perimeter: " << sh->perimeter() << endl;
+                }
+                break;
+            }
+            cout << "Triangle not found in file";
+        }
+
+        break;
+
+        case 4:
+        {
+            string line;
+
+            while (getline(file, line))
+            {
+                if (regex_match(line, regex("^Square$")))
+                {
+                    getline(file, line);
+                    double side = getValue(line);
+                    sh = new Square(side);
+                    sh->display();
+                    cout << "Area: " << sh->area() << endl;
+                    cout << "Perimeter: " << sh->perimeter() << endl;
+                }
+                break;
+            }
+            cout << "Square not found in file";
         }
 
         break;
