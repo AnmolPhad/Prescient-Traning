@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <regex>
+#include <cmath>
 
 using namespace std;
 
@@ -170,6 +172,35 @@ public:
     }
 };
 
+int menu(void)
+{
+    cout << endl
+         << "0.EXIT" << endl
+         << "1.Circle" << endl
+         << "2.Rectangle" << endl
+         << "3.Triangle" << endl
+         << "4.Square" << endl;
+
+    int choice = 0;
+    cout << "Enter your choice: ";
+    cin >> choice;
+    return choice;
+}
+
+double getValue(string line)
+{
+    regex pattern("(\\d+(\\.\\d+)?)");
+
+    smatch match;
+
+    if (regex_search(line, match, pattern))
+    {
+        return stod(match[1]);
+    }
+
+    return 0;
+}
+
 int main(void)
 {
     writeShapesToFile();
@@ -180,19 +211,68 @@ int main(void)
         cout << "Unable to open file!" << endl;
         return 1;
     }
-    string shape;
-    string radiusLine;
 
-    getline(file, shape);
-    getline(file, radiusLine);
-    double radius = stod(radiusLine.substr(8));
+    Shape *sh = nullptr;
 
-    Circle c(radius);
+    int choice = 0;
 
-    c.display();
+    while ((choice = menu()) != 0)
+    {
+        switch (choice)
+        {
+        case 1:
+        {
+            string line;
+            while (getline(file, line))
+            {
+                if (regex_match(line, regex("^Circle$")))
+                {
+                    getline(file, line);
+                    double radius = getValue(line);
 
-    cout << "Area: " << c.area() << endl;
-    cout << "Perimeter: " << c.perimeter() << endl;
+                    sh = new Circle(radius);
+                    sh->display();
+                    cout << "Area: " << sh->area() << endl;
+                    cout << "Perimeter: " << sh->perimeter() << endl;
+
+                    delete sh;
+                    sh = nullptr;
+                }
+            }
+            break;
+            cout << "Circle not found in file";
+        }
+        break;
+
+        case 2:
+        {
+
+            string line;
+
+            while (getline(file, line))
+            {
+                if (regex_match(line, regex("^Rectangle$")))
+                {
+                    getline(file, line);
+                    double length = getValue(line);
+                    getline(file, line);
+                    double width = getValue(line);
+                    sh = new Rectangle(length, width);
+                    sh->display();
+                    cout << "Area: " << sh->area() << endl;
+                    cout << "Perimeter: " << sh->perimeter() << endl;
+                }
+                break;
+            }
+            cout << "Reactangle not found in file";
+        }
+
+        break;
+        default:
+            cout << "Enter valid choice : ";
+            break;
+        }
+    }
 
     file.close();
 
